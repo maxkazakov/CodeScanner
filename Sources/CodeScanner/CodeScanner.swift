@@ -50,7 +50,8 @@ public enum ScanMode {
 /// For testing inside the simulator, set the `simulatedData` property to some test data you want to send back.
 @available(macCatalyst 14.0, *)
 public struct CodeScannerView: UIViewControllerRepresentable {
-    
+
+    public let isScanActive: Bool
     public let codeTypes: [AVMetadataObject.ObjectType]
     public let scanMode: ScanMode
     public let scanInterval: Double
@@ -63,6 +64,7 @@ public struct CodeScannerView: UIViewControllerRepresentable {
     public var completion: (Result<ScanResult, ScanError>) -> Void
 
     public init(
+        isScanActive: Bool = true,
         codeTypes: [AVMetadataObject.ObjectType],
         scanMode: ScanMode = .once,
         scanInterval: Double = 2.0,
@@ -74,6 +76,7 @@ public struct CodeScannerView: UIViewControllerRepresentable {
         videoCaptureDevice: AVCaptureDevice? = AVCaptureDevice.default(for: .video),
         completion: @escaping (Result<ScanResult, ScanError>) -> Void
     ) {
+        self.isScanActive = isScanActive
         self.codeTypes = codeTypes
         self.scanMode = scanMode
         self.showViewfinder = showViewfinder
@@ -98,6 +101,7 @@ public struct CodeScannerView: UIViewControllerRepresentable {
 
     public func updateUIViewController(_ uiViewController: ScannerViewController, context: Context) {
         uiViewController.updateViewController(
+            isScanActive: isScanActive,
             isTorchOn: isTorchOn,
             isGalleryPresented: isGalleryPresented.wrappedValue
         )

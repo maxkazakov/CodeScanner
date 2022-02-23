@@ -282,7 +282,9 @@ extension CodeScannerView {
         
         #endif
         
-        func updateViewController(isTorchOn: Bool, isGalleryPresented: Bool) {
+        func updateViewController(isScanActive: Bool, isTorchOn: Bool, isGalleryPresented: Bool) {
+            delegate?.isScanActive = isScanActive
+
             if let backCamera = AVCaptureDevice.default(for: AVMediaType.video),
                backCamera.hasTorch
             {

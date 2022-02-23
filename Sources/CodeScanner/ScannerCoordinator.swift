@@ -14,6 +14,7 @@ extension CodeScannerView {
     public class ScannerCoordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
         var parent: CodeScannerView
         var codesFound = Set<String>()
+        var isScanActive = true
         var didFinishScanning = false
         var lastTime = Date(timeIntervalSince1970: 0)
 
@@ -28,6 +29,7 @@ extension CodeScannerView {
         }
 
         public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+            guard isScanActive else { return }
             if let metadataObject = metadataObjects.first {
                 guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
                 guard let stringValue = readableObject.stringValue else { return }
